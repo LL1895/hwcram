@@ -10,11 +10,14 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hwcram.settings")
 
 django.setup()
 from account.models import Account
+from ecs.models import Ecs
 
 account_data = Account.objects.all()
 utc_time_now = datetime.utcnow().replace(tzinfo=timezone.utc)
 
 def update_token():
-    for i in account_data:
-        if utc_time_now > i.token_up_time:
-            i.save()
+#    for i in account_data:
+#        print(i.token_up_time)
+#    for 
+    pass
+
