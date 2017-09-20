@@ -8,7 +8,7 @@ class GlobalSetting(object):
     site_footer = 'V1.2.0'
 
 class EcsAdmin(object):
-    readonly_fields = ('ecs_name','ecs_id','region','delete_ecs_tag','shut_ecs_tag','ecs_status_tag','account_name')
+    readonly_fields = ('ecs_name','ecs_id','region','ecs_status_tag','account_name')
     list_display =  ['ecs_name', 'region', 'account_name', 'ecs_shut_time', 'ecs_delete_time', 'ecs_status_tag']
     list_filter = ['account_name', 'region']
     search_fields = ['ecs_name','ecs_id','account_name','region']

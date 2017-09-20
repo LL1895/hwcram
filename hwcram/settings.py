@@ -133,5 +133,5 @@ STATIC_URL = '/static/'
 
 #django_crontab
 CRONJOBS = [
-    ('*/1 * * * *', 'account.cron.sync_token','>> /tmp/sync.log'),
+    ('*/1 * * * *', 'account.cron.update_token'),
 ]

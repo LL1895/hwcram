@@ -25,10 +25,9 @@ class Account(models.Model):
         self.tokencn_north_1 = TokenApi(self.account_name,self.user_name,self.password,'cn-north-1').get_token()
         self.tokencn_east_2 = TokenApi(self.account_name,self.user_name,self.password,'cn-east-2').get_token()
         self.tokencn_south_1 = TokenApi(self.account_name,self.user_name,self.password,'cn-south-1').get_token()
-        #self.token_up_time = datetime.strptime(datetime.utcnow(tzinfo=timezone.utc).strftime("%Y-%m-%d %H:%M:%S"),"%Y-%m-%d %H:%M:%S") + datetime.timedelta(hours=23)
         self.token_up_time = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc) + datetime.timedelta(hours=23)
         super(Account,self).save(*args,**kargs)
 
-
-
-
+#    def delete(self,*args,**kargs):
+#        self.ecs.delete()
+#        super(Account,self).delete(*args,**kargs)

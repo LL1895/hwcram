@@ -1,4 +1,6 @@
 from django.db import models
+import datetime
+from account.models import Account
 
 # Create your models here.
 class Ecs(models.Model):
@@ -8,12 +10,16 @@ class Ecs(models.Model):
     region = models.CharField('区域', choices=region_choices, max_length=32, default='cn-north-1')
     ecs_shut_time = models.DateTimeField('关机时间',null=True)
     ecs_delete_time = models.DateTimeField('删除时间',null=True)
-    shut_ecs_tag = models.BooleanField('关机', default=0)
-    delete_ecs_tag = models.BooleanField('删除', default=0)
     ecs_status_tag = models.BooleanField('运行中', default=0)
-    account_name = models.CharField('账户', max_length=20, null=True)
+    account_name = models.CharField('账户',max_length=20,null=True)
+    #account_name = models.ForeignKey(Account,on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = "开机关机"
+        verbose_name = "云主机"
         verbose_name_plural = verbose_name
-        db_table = "hw_ecs_onoff"
+        db_table = "hw_ecs"
+
+    def save(self,*args,**kargs):
+        if self.ecs_delete_time <= self.ecs_shut_time:
+            self.ecs_delete_time = self.ecs_shut_time + datetime.timedelta(days=7)
+        super(Ecs,self).save(*args,**kargs)
