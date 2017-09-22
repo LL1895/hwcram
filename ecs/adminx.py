@@ -8,13 +8,14 @@ class GlobalSetting(object):
     site_footer = 'V1.2.0'
 
 class EcsAdmin(object):
-    readonly_fields = ('ecs_name','ecs_id','region','ecs_is_active','account_name')
-    list_display =  ['ecs_name', 'region', 'account_name', 'ecs_shut_time', 'ecs_delete_time', 'ecs_is_active']
+    readonly_fields = ('ecs_name','ecs_id','region','ecs_is_active','account_name','private_ip','public_ip')
+    list_display =  ['ecs_name', 'private_ip','public_ip','region', 'account_name', 'ecs_shut_time', 'ecs_delete_time', 'ecs_is_active']
     list_filter = ['account_name', 'region']
-    search_fields = ['ecs_name','ecs_id','account_name','region']
+    search_fields = ['ecs_name','ecs_id','account_name','region','private_ip','public_ip']
     list_per_page = 10
     list_export = []
     refresh_times = (20,40,60)
+    #list_editable = ['ecs_shut_time','ecs_delete_time']
 
 #class Ecs_allAdmin(admin.ModelAdmin):
 #    list_disply = ['ecs_name', 'ecs_id', 'regoin', 'shut_time', 'delete_time']

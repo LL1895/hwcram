@@ -19,6 +19,8 @@ class Ecs(models.Model):
     ecs_is_active = models.BooleanField('运行中', default=0)
     account_name = models.CharField('账户',max_length=20,null=True)
     account = models.ForeignKey(Account,on_delete=models.CASCADE,null=True)
+    private_ip = models.GenericIPAddressField('私网地址',null=True)
+    public_ip = models.GenericIPAddressField('公网地址',null=True)
 
     class Meta:
         verbose_name = "云主机"

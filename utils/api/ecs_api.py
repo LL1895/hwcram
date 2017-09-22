@@ -213,7 +213,7 @@ class EcsApi(object):
 
     def get_private_ip(self,server_id):
         self.server_id = server_id
-        self.nozzle = "/v2/" + self.project_id + "/servers/" + self.server_id
+        self.nozzle = "/v2/" + self.project_id + "/servers/" + self.server_id + "/os-interface"
         requestUrl = self.endpoint + self.nozzle
 
         headers = {
@@ -226,12 +226,10 @@ class EcsApi(object):
         try:
             r = requests.get(requestUrl,headers=headers,verify=False,timeout=10)
             if r.status_code == 200:
-                return r.json()
-                #idict = {}
-                #ilist = r.json()['servers']
-                #for i in range(0,len(ilist)):
-                #    idict[ilist[i]['name']] = ilist[i]['id']
-                #return idict
+                idict = {}
+                ilist = r.json()['interfaceAttachments'][0]['fixed_ips']
+                idict[self.server_id] = ilist[0]['ip_address']
+                return idict
             else:
                 log.logging.error("status_code is " + str(r.status_code) + " not 200,get private ip failed")
         except Exception as e:

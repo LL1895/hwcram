@@ -133,6 +133,7 @@ STATIC_URL = '/static/'
 
 #django_crontab
 CRONJOBS = [
-    ('*/1 * * * *', 'account.cron.update_token','>> /var/log/hwcram/hwcram.log'),
-    ('*/1 * * * *', 'ecs.cron.sync_ecs','>> /var/log/hwcram/hwcram.log'),
+    ('*/1 * * * *', 'crontab.cron.cron_nginx','> /dev/null'),
+    ('*/1 * * * *', 'crontab.cron.cron_uwsgi','> /dev/null'),
+    #('*/1 * * * *', 'crontab.cron.cron_hwcram','> /dev/null'),
 ]
