@@ -32,13 +32,8 @@ class VpcApi(object):
         try:
             r = requests.get(requestUrl,headers=headers,verify=False,timeout=10)
             if r.status_code == 200:
-                idict = {}
                 ilist = r.json()['publicips']
-                for i in ilist:
-                    private_ip = i['private_ip_address']
-                    public_ip = i['public_ip_address']
-                    idict[public_ip] = private_ip
-                return idict
+                return ilist
             else:
                 log.logging.error("status_code is " + str(r.status_code) + " not 200,get public ip failed")
         except Exception as e:

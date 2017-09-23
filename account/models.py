@@ -12,9 +12,9 @@ class Account(models.Model):
     pidcn_east_2 = models.CharField('项目ID-华东2', max_length=40)
     pidcn_south_1 = models.CharField('项目ID-华南1', max_length=40)
     tokencn_north_1 = models.TextField('token-华北1',null=True)
-    tokencn_east_2 = models.TextField('token-华东2',null=True)
-    tokencn_south_1 = models.TextField('token-华南1',null=True)
-    token_up_time = models.DateTimeField('token-有效(UTC)',null=True)
+    tokencn_east_2 = models.TextField('Token-华东2',null=True)
+    tokencn_south_1 = models.TextField('Token-华南1',null=True)
+    token_up_time = models.DateTimeField('Token-有效(UTC)',null=True)
 
     class Meta:
         verbose_name = "云账户"
@@ -27,7 +27,3 @@ class Account(models.Model):
         self.tokencn_south_1 = TokenApi(self.account_name,self.user_name,self.password,'cn-south-1').get_token()
         self.token_up_time = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc) + datetime.timedelta(hours=23)
         super(Account,self).save(*args,**kargs)
-
-#    def delete(self,*args,**kargs):
-#        self.ecs.delete()
-#        super(Account,self).delete(*args,**kargs)

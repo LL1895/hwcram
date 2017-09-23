@@ -37,8 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'account',
     'ecs',
+    'vpc',
+    'account',
     'xadmin',
     'crispy_forms',
     'import_export',
@@ -135,6 +136,6 @@ STATIC_URL = '/static/'
 CRONJOBS = [
     ('*/1 * * * *', 'crontab.cron.cron_nginx','> /dev/null'),
     ('*/1 * * * *', 'crontab.cron.cron_uwsgi','> /dev/null'),
-    #('*/1 * * * *', 'crontab.cron.cron_hwcram','> /dev/null'),
+    #('*/1 * * * *', 'crontab.cron.cron_hwcram_ecs','> /dev/null'),
     ('*/1 * * * *', 'crontab.cron.update_token','> /dev/null'),
 ]

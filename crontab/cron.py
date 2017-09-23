@@ -39,7 +39,7 @@ def cron_uwsgi():
     if retcode_uwsgi == 1:
         subprocess.call("/usr/bin/uwsgi --ini /opt/hwcram/hwcram_uwsgi.ini -d /var/log/hwcram/uwsgi.log",shell=True)
 
-def cron_hwcram():
-    retcode_hwcram = subprocess.call("ps -ef|grep hwcram.py|grep -v grep",shell=True)
+def cron_hwcram_ecs():
+    retcode_hwcram_ecs = subprocess.call("ps -ef|grep hwcram_ecs.py|grep -v grep",shell=True)
     if retcode_hwcram == 1:
-        subprocess.call("nohup /usr/bin/python3 /opt/hwcram/utils/hwcram.py > /dev/null 2>&1 &",shell=True)
+        subprocess.call("nohup /usr/bin/python3 /opt/hwcram/utils/hwcram_ecs.py > /dev/null 2>&1 &",shell=True)
