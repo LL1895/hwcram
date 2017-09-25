@@ -7,12 +7,12 @@ from api.vpc_api import VpcApi
 class Vpc(models.Model):
     publicip_id = models.CharField('弹性IP-ID', max_length=40,null=True)
     publicip_status = models.CharField('状态', max_length=20,null=True)
-    iptype_choices = (('5_bgp','动态'),('5_sbgp','静态'))
+    iptype_choices = (('5_bgp','动态BGP'),('5_sbgp','静态BGP'))
     publicip_type = models.CharField('IP类型',choices=iptype_choices,max_length=10,null=True)
     publicip = models.GenericIPAddressField('弹性IP',null=True)
     privateip = models.GenericIPAddressField('私有IP',null=True)
     project_id = models.CharField('项目ID', max_length=40,null=True)
-    create_time = models.CharField('创建时间', max_length=40,null=True)
+    create_time = models.CharField('创建时间(UTC)', max_length=40,null=True)
     bandwidth_id = models.CharField('带宽ID', max_length=40,null=True)
     bandtype_choices = (('WHOLE','共享'),('PER','独享'))
     bandwidth_type = models.CharField('带宽类型', choices=bandtype_choices,max_length=10,null=True)
@@ -28,9 +28,82 @@ class Vpc(models.Model):
         verbose_name_plural = verbose_name
         db_table = "hw_vpc"
 
-#    def save(self,*args,**kargs):
-#        self.tokencn_north_1 = TokenApi(self.account_name,self.user_name,self.password,'cn-north-1').get_token()
-#        self.tokencn_east_2 = TokenApi(self.account_name,self.user_name,self.password,'cn-east-2').get_token()
-#        self.tokencn_south_1 = TokenApi(self.account_name,self.user_name,self.password,'cn-south-1').get_token()
-#        self.token_up_time = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc) + datetime.timedelta(hours=23)
-#        super(Account,self).save(*args,**kargs)
+class Createip(models.Model):
+    publicip_id = models.CharField('弹性IP-ID', max_length=40,null=True)
+    iptype_choices = (('5_bgp','动态BGP'),('5_sbgp','静态BGP'))
+    publicip_type = models.CharField('IP类型',choices=iptype_choices,max_length=10,null=True,help_text="<font color='red'>* 为必填项</font>")
+    publicip = models.GenericIPAddressField('弹性IP',null=True,blank=True,help_text='指定ip地址创建，留空则随机创建ip')
+    create_time = models.CharField('创建时间(UTC)', max_length=40,null=True)
+    bandtype_choices = (('WHOLE','共享'),('PER','独享'))
+    bandwidth_share_type = models.CharField('带宽类型', choices=bandtype_choices,max_length=10,null=True)
+    bandwidth_share_id = models.CharField(
+        '共享带宽ID',
+        max_length=40,
+        null=True,
+        blank=True,
+        help_text="<font color='blue'>独享带宽留空</font>，<font color='red'>共享带宽填写</font>",
+    )
+    bandwidth_size = models.IntegerField(
+        '带宽大小',
+        null=True,
+        blank=True,
+        help_text="<font color='blue'>独享带宽，填写数字，范围1~300M</font>，<font color='red'>共享带宽留空</font>",
+    )
+    bandwidth_name = models.CharField(
+        '带宽名称',
+        max_length=128,
+        null=True,
+        blank=True,
+        help_text="<font color='blue'>独享带宽填写</font>，<font color='red'>共享带宽留空</font>",
+    )
+    bandwidth_charge_choices = (('traffic','按流量计费'),('bandwidth','按带宽计费'))
+    bandwidth_charge_mode = models.CharField(
+        '带宽计费方式',
+        choices=bandwidth_charge_choices,
+        blank=True,
+        null=True,
+        max_length=10,
+        help_text="<font color='blue'>独享带宽填写</font>，<font color='red'>共享带宽留空</font>",
+    )
+    account = models.ForeignKey(Account,on_delete=models.CASCADE,null=True)
+    account_name = models.CharField('账户',max_length=20,null=True,help_text='填写云账户中已经配置的帐户名')
+    region_choices = (('cn-north-1','华北1'),('cn-south-1','华南1'),('cn-east-2','华东2'))
+    region = models.CharField('区域', choices=region_choices, max_length=32,null=True)
+    result_choices = (('200','状态码200，命令下发成功，请检查IP是否创建成功'),('409','错误码409，IP地址已被占用，创建失败'),('400','错误码400，参数错误，请检查填写项'))
+    result = models.CharField('创建结果', choices=result_choices, max_length=128,null=True)
+
+    class Meta:
+        verbose_name = "创建指定IP"
+        verbose_name_plural = verbose_name
+        db_table = "hw_createip"
+
+    def save(self,*args,**kargs):
+        account_data = Account.objects.filter(account_name=self.account_name)
+        iaccount_id = list(map(lambda x: x.id,account_data))
+        self.account_id = iaccount_id[0]
+
+        if self.region == 'cn-north-1':
+            iproject_id = list(map(lambda x: x.pidcn_north_1,account_data))
+            itoken = list(map(lambda x: x.tokencn_north_1,account_data))
+
+        if self.region == 'cn-east-2':
+            iproject_id = list(map(lambda x: x.pidcn_east_2,account_data))
+            itoken = list(map(lambda x: x.tokencn_east_2,account_data))
+
+        if self.region == 'cn-south-1':
+            iproject_id = list(map(lambda x: x.pidcn_south_1,account_data))
+            itoken = list(map(lambda x: x.tokencn_south_1,account_data))
+
+        r = VpcApi(itoken[0],self.region,iproject_id[0]).create_public_ip(self.publicip_type,self.bandwidth_share_type,self.publicip,self.bandwidth_name,self.bandwidth_size,self.bandwidth_share_id,self.bandwidth_charge_mode)
+
+        if r[1] == 200:
+            self.publicip_id = r[0]['id']
+            self.publicip_type = r[0]['type']
+            self.publicip = r[0]['public_ip_address']
+            self.create_time = r[0]['create_time']
+            self.bandwidth_size = r[0]['bandwidth_size']
+            self.result = str(r[1])
+        else:
+            self.result = str(r[1])
+
+        super(Createip,self).save(*args,**kargs)

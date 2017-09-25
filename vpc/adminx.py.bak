@@ -2,7 +2,6 @@ import xadmin
 from import_export import resources
 from .models import Vpc
 from .models import Createip
-from account.models import Account
 # Register your models here.
 class VpcImportResource(resources.ModelResource):
     class Meta:
@@ -20,7 +19,7 @@ class CreateipImportResource(resources.ModelResource):
     class Meta:
         model = Createip
         #fields = ('name', 'description',)
-        exclude = ('publicip_id','create_time','account','result')
+        #exclude = ('tokencn_north_1','tokencn_east_2','tokencn_south_1','token_up_time')
 
 class CreateipExportResource(resources.ModelResource):
     class Meta:
@@ -87,33 +86,37 @@ class VpcAdmin(object):
 class CreateipAdmin(object):
     exclude = (
         'publicip_id',
+        'publicip_status',
         'create_time',
         'account',
-        'result',
+        'account_name',
     )
     #exclude = ('tokencn_north_1','tokencn_east_2','tokencn_south_1','token_up_time')
     list_display =  [
         'publicip',
         'publicip_type',
-        'result',
+        'publicip_status',
         'account_name',
         'region',
+        'bandwidth_type',
+        'bandwidth_size',
+        'bandwidth_name',
         'create_time',
     ]
     list_filter = [
         'account_name',
         'region',
         'publicip_type',
-        'bandwidth_share_type',
-        'bandwidth_size',
+        'publicip_status',
+        'bandwidth_type',
     ]
     search_fields = [
-        'bandwidth_share_type',
+        'publicip_id',
         'region',
         'publicip',
-        'bandwidth_share_id',
+        'project_id',
+        'bandwidth_id',
         'bandwidth_name',
-        'bandwidth_size',
         'account_name'
     ]
     #list_editable =  ['account_name', 'user_name', 'password', 'pidcn_north_1', 'pidcn_east_2', 'pidcn_south_1']
@@ -122,4 +125,4 @@ class CreateipAdmin(object):
     show_detail_fields = []
     refresh_times = (20,40,60)
     #refresh_times = (5,10,20)                                                   
-    import_export_args = {'import_resource_class':CreateipImportResource,'export_resource_class': CreateipExportResource}
+    import_export_args = {'export_resource_class': CreateipExportResource}
