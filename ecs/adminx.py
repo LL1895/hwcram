@@ -27,26 +27,10 @@ class EcsAdmin(object):
     list_filter = ['account_name', 'region']
     search_fields = ['ecs_name','ecs_id','account_name','region','private_ip','public_ip']
     list_per_page = 10
-    list_export = []
+    #list_export = []
     refresh_times = (20,40,60)
     show_detail_fields = []
     #list_editable = ['ecs_shut_time','ecs_delete_time']
-    import_export_args = {'export_resource_class': EcsExportResource}
-
-#class Ecs_allAdmin(admin.ModelAdmin):
-#    list_disply = ['ecs_name', 'ecs_id', 'regoin', 'shut_time', 'delete_time']
-#    list_filter = ['region', 'shut_time','delete_time']
-#    search_fields = ['ecs_name','ecs_id']
-#    list_per_page = 10
-#
-#    actions = ['make_published']
-#
-#    def make_published(modeladmin, request, queryset):
-#        queryset.update(operate=0)
-#        n = queryset.count()
-#        if n:
-#            modeladmin.message_user(request,"Successfully deleted %s." % n)
-#    make_published.short_description = "Mark selected stories as published"
+    #import_export_args = {'export_resource_class': EcsExportResource}
 
 xadmin.site.register(views.CommAdminView, GlobalSetting)
-#xadmin.site.register(Ecs_all,Ecs_allAdmin)

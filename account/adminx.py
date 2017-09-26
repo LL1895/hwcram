@@ -22,7 +22,7 @@ class AccountAdmin(object):
     search_fields = ['account_name','user_name','pidcn_north_1', 'pidcn_east_2', 'pidcn_south_1']
     #list_editable =  ['account_name', 'user_name', 'password', 'pidcn_north_1', 'pidcn_east_2', 'pidcn_south_1']
     list_per_page = 10
-    list_export = []
+    #list_export = []
     show_detail_fields = []
     #refresh_times = (5,10,20)                                                   
-    import_export_args = {'import_resource_class': AccountImportResource, 'export_resource_class': AccountExportResource}
+    import_export_args = {'import_resource_class': AccountImportResource}

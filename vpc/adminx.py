@@ -3,6 +3,7 @@ from import_export import resources
 from .models import Vpc
 from .models import Createip
 from account.models import Account
+from .action import CreateipAction
 # Register your models here.
 class VpcImportResource(resources.ModelResource):
     class Meta:
@@ -46,7 +47,7 @@ class VpcAdmin(object):
         'account_name',
         'region',
     )
-    #exclude = ('tokencn_north_1','tokencn_east_2','tokencn_south_1','token_up_time')
+
     list_display =  [
         'publicip',
         'publicip_type',
@@ -59,6 +60,7 @@ class VpcAdmin(object):
         'bandwidth_name',
         'create_time',
     ]
+
     list_filter = [
         'account_name',
         'region',
@@ -66,6 +68,7 @@ class VpcAdmin(object):
         'publicip_status',
         'bandwidth_type',
     ]
+
     search_fields = [
         'publicip_id',
         'region',
@@ -75,13 +78,18 @@ class VpcAdmin(object):
         'bandwidth_name',
         'account_name'
     ]
+
     #list_editable =  ['account_name', 'user_name', 'password', 'pidcn_north_1', 'pidcn_east_2', 'pidcn_south_1']
+
     list_per_page = 10
-    list_export = []
+
+    #list_export = []
+
     show_detail_fields = []
+
     refresh_times = (20,40,60)
-    #refresh_times = (5,10,20)                                                   
-    import_export_args = {'export_resource_class': VpcExportResource}
+
+    #import_export_args = {'export_resource_class': VpcExportResource}
 
 @xadmin.sites.register(Createip)
 class CreateipAdmin(object):
@@ -91,7 +99,7 @@ class CreateipAdmin(object):
         'account',
         'result',
     )
-    #exclude = ('tokencn_north_1','tokencn_east_2','tokencn_south_1','token_up_time')
+
     list_display =  [
         'publicip',
         'publicip_type',
@@ -100,6 +108,7 @@ class CreateipAdmin(object):
         'region',
         'create_time',
     ]
+
     list_filter = [
         'account_name',
         'region',
@@ -107,6 +116,7 @@ class CreateipAdmin(object):
         'bandwidth_share_type',
         'bandwidth_size',
     ]
+
     search_fields = [
         'bandwidth_share_type',
         'region',
@@ -116,10 +126,17 @@ class CreateipAdmin(object):
         'bandwidth_size',
         'account_name'
     ]
+
     #list_editable =  ['account_name', 'user_name', 'password', 'pidcn_north_1', 'pidcn_east_2', 'pidcn_south_1']
+
     list_per_page = 10
-    list_export = []
+
+    #list_export = []
+
     show_detail_fields = []
-    refresh_times = (20,40,60)
-    #refresh_times = (5,10,20)                                                   
-    import_export_args = {'import_resource_class':CreateipImportResource,'export_resource_class': CreateipExportResource}
+
+    #refresh_times = (20,40,60)
+
+    import_export_args = {'import_resource_class':CreateipImportResource}
+
+    actions = [CreateipAction,]

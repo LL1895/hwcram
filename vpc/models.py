@@ -73,37 +73,37 @@ class Createip(models.Model):
     result = models.CharField('创建结果', choices=result_choices, max_length=128,null=True)
 
     class Meta:
-        verbose_name = "创建指定IP"
+        verbose_name = "创建IP"
         verbose_name_plural = verbose_name
         db_table = "hw_createip"
 
-    def save(self,*args,**kargs):
-        account_data = Account.objects.filter(account_name=self.account_name)
-        iaccount_id = list(map(lambda x: x.id,account_data))
-        self.account_id = iaccount_id[0]
-
-        if self.region == 'cn-north-1':
-            iproject_id = list(map(lambda x: x.pidcn_north_1,account_data))
-            itoken = list(map(lambda x: x.tokencn_north_1,account_data))
-
-        if self.region == 'cn-east-2':
-            iproject_id = list(map(lambda x: x.pidcn_east_2,account_data))
-            itoken = list(map(lambda x: x.tokencn_east_2,account_data))
-
-        if self.region == 'cn-south-1':
-            iproject_id = list(map(lambda x: x.pidcn_south_1,account_data))
-            itoken = list(map(lambda x: x.tokencn_south_1,account_data))
-
-        r = VpcApi(itoken[0],self.region,iproject_id[0]).create_public_ip(self.publicip_type,self.bandwidth_share_type,self.publicip,self.bandwidth_name,self.bandwidth_size,self.bandwidth_share_id,self.bandwidth_charge_mode)
-
-        if r[1] == 200:
-            self.publicip_id = r[0]['id']
-            self.publicip_type = r[0]['type']
-            self.publicip = r[0]['public_ip_address']
-            self.create_time = r[0]['create_time']
-            self.bandwidth_size = r[0]['bandwidth_size']
-            self.result = str(r[1])
-        else:
-            self.result = str(r[1])
-
-        super(Createip,self).save(*args,**kargs)
+#    def save(self,*args,**kargs):
+#        account_data = Account.objects.filter(account_name=self.account_name)
+#        iaccount_id = list(map(lambda x: x.id,account_data))
+#        self.account_id = iaccount_id[0]
+#
+#        if self.region == 'cn-north-1':
+#            iproject_id = list(map(lambda x: x.pidcn_north_1,account_data))
+#            itoken = list(map(lambda x: x.tokencn_north_1,account_data))
+#
+#        if self.region == 'cn-east-2':
+#            iproject_id = list(map(lambda x: x.pidcn_east_2,account_data))
+#            itoken = list(map(lambda x: x.tokencn_east_2,account_data))
+#
+#        if self.region == 'cn-south-1':
+#            iproject_id = list(map(lambda x: x.pidcn_south_1,account_data))
+#            itoken = list(map(lambda x: x.tokencn_south_1,account_data))
+#
+#        r = VpcApi(itoken[0],self.region,iproject_id[0]).create_public_ip(self.publicip_type,self.bandwidth_share_type,self.publicip,self.bandwidth_name,self.bandwidth_size,self.bandwidth_share_id,self.bandwidth_charge_mode)
+#
+#        if r[1] == 200:
+#            self.publicip_id = r[0]['id']
+#            self.publicip_type = r[0]['type']
+#            self.publicip = r[0]['public_ip_address']
+#            self.create_time = r[0]['create_time']
+#            self.bandwidth_size = r[0]['bandwidth_size']
+#            self.result = str(r[1])
+#        else:
+#            self.result = str(r[1])
+#
+#        super(Createip,self).save(*args,**kargs)
