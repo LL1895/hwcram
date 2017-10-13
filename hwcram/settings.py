@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 """
 Django settings for hwcram project.
 
@@ -12,6 +13,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import sys
+from datetime import timedelta
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +27,7 @@ SECRET_KEY = 'o)3$s33s7efi^m)ho6@&_j#v4#y59yyrv8j0&mmrcf%)cdj0(r'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['49.4.1.242']
+ALLOWED_HOSTS = ['49.4.1.107']
 
 
 # Application definition
@@ -44,6 +46,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'import_export',
     'django_crontab',
+    'kombu.transport.django',
+    'djcelery',
 ]
 
 MIDDLEWARE = [
@@ -136,6 +140,35 @@ STATIC_URL = '/static/'
 CRONJOBS = [
     ('*/1 * * * *', 'crontab.cron.cron_nginx','> /dev/null'),
     ('*/1 * * * *', 'crontab.cron.cron_uwsgi','> /dev/null'),
-    #('*/1 * * * *', 'crontab.cron.cron_hwcram_ecs','> /dev/null'),
+    ('*/1 * * * *', 'crontab.cron.cron_celery','> /dev/null'),
+    ('*/1 * * * *', 'crontab.cron.cron_celerybeat','> /dev/null'),
     ('*/1 * * * *', 'crontab.cron.update_token','> /dev/null'),
 ]
+
+BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+#CELERY_TIMEZONE = 'Asia/Shanghai'
+CELERY_TIMEZONE = TIME_ZONE
+
+CELERYBEAT_SCHEDULE = {
+    'ecs-task-20-seconds': {
+        'task': 'ecs.tasks.ecs_task',
+        'schedule': timedelta(seconds=20),
+        'args': ()
+    },
+    'ip-task-20-seconds': {
+        'task': 'vpc.tasks.ip_task',
+        'schedule': timedelta(seconds=20),
+        'args': ()
+    },
+#    # Executes every Monday morning at 7:30 A.M
+#    'add-every-1-minute': {
+#        'task': 'apptest.tasks.test_celery3',
+#        'schedule': crontab(minute='*/1'),
+#        'args': ('test_celery3',),
+#    },
+}

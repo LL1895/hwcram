@@ -30,7 +30,7 @@ class VpcApi(object):
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
         try:
-            r = requests.get(requestUrl,headers=headers,verify=False,timeout=10)
+            r = requests.get(requestUrl,headers=headers,verify=False,timeout=20)
             if r.status_code == 200:
                 ilist = r.json()['publicips']
                 return ilist
@@ -68,7 +68,6 @@ class VpcApi(object):
                         "type":self.ip_type,
                     },
                     "bandwidth":{
-                        "size":self.bandwidth_size,
                         "id":self.bandwidth_share_id,
                         "share_type":self.bandwidth_share_type,
                     }
@@ -109,7 +108,7 @@ class VpcApi(object):
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
         try:
-            r = requests.post(requestUrl,json=datas,headers=headers,verify=False,timeout=30)
+            r = requests.post(requestUrl,json=datas,headers=headers,verify=False,timeout=20)
             if r.status_code == 200:
                 return r.json()['publicip'],r.status_code
             else:

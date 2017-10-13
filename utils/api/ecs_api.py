@@ -30,7 +30,7 @@ class EcsApi(object):
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
         try:
-            r = requests.get(requestUrl,headers=headers,verify=False,timeout=10)
+            r = requests.get(requestUrl,headers=headers,verify=False,timeout=20)
             if r.status_code == 200:
                 return str(r.text).count("links")
             else:
@@ -50,7 +50,7 @@ class EcsApi(object):
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
         try:
-            r = requests.get(requestUrl,headers=headers,verify=False,timeout=10)
+            r = requests.get(requestUrl,headers=headers,verify=False,timeout=20)
             if r.status_code == 200:
                 return str(r.text).count("links")
             else:
@@ -73,7 +73,7 @@ class EcsApi(object):
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
         try:
-            r = requests.get(requestUrl,headers=headers,verify=False,timeout=10)
+            r = requests.get(requestUrl,headers=headers,verify=False,timeout=20)
             if r.status_code == 200:
                 idict = {}
                 ilist = r.json()['servers']
@@ -98,7 +98,7 @@ class EcsApi(object):
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
         try:
-            r = requests.get(requestUrl,headers=headers,verify=False,timeout=10)
+            r = requests.get(requestUrl,headers=headers,verify=False,timeout=20)
             if r.status_code == 200:
                 ilist = r.json()['servers']
                 idict = {}
@@ -128,7 +128,7 @@ class EcsApi(object):
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
         try:
-            r = requests.get(requestUrl,headers=headers,verify=False,timeout=10)
+            r = requests.get(requestUrl,headers=headers,verify=False,timeout=20)
             if r.status_code == 200:
                 ilist = r.json()['servers']
                 idict = {}
@@ -170,7 +170,7 @@ class EcsApi(object):
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
         try:
-            r = requests.post(requestUrl,json=datas,headers=headers,verify=False,timeout=10)
+            r = requests.post(requestUrl,json=datas,headers=headers,verify=False,timeout=20)
             if r.status_code == 200:
                 return r.json()
             else:
@@ -203,7 +203,7 @@ class EcsApi(object):
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
         try:
-            r = requests.post(requestUrl,json=datas,headers=headers,verify=False,timeout=10)
+            r = requests.post(requestUrl,json=datas,headers=headers,verify=False,timeout=20)
             if r.status_code == 200:
                 return r.json()
             else:
@@ -224,7 +224,7 @@ class EcsApi(object):
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
         try:
-            r = requests.get(requestUrl,headers=headers,verify=False,timeout=10)
+            r = requests.get(requestUrl,headers=headers,verify=False,timeout=20)
             if r.status_code == 200:
                 idict = {}
                 ilist = r.json()['interfaceAttachments'][0]['fixed_ips']

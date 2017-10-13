@@ -47,7 +47,7 @@ class TokenApi(object):
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
         try:
-            r = requests.post(requestUrl,json=datas,headers=headers,verify=False,timeout=5)
+            r = requests.post(requestUrl,json=datas,headers=headers,verify=False,timeout=20)
             if r.status_code == 201:
                 return r.headers.get("X-Subject-Token")
             else:

@@ -30,16 +30,21 @@ def update_token():
         log.logging.error("Failed to update_token")
 
 def cron_nginx():
-    retcode_nginx = subprocess.call("netstat -lnpt|grep nginx",shell=True)
+    retcode_nginx = subprocess.call("netstat -lnpt|grep nginx|grep -v grep",shell=True)
     if retcode_nginx == 1:
         subprocess.call("/usr/sbin/nginx",shell=True)
 
 def cron_uwsgi():
-    retcode_uwsgi = subprocess.call("netstat -lnpt|grep uwsgi",shell=True)
+    retcode_uwsgi = subprocess.call("netstat -lnpt|grep uwsgi|grep -v grep",shell=True)
     if retcode_uwsgi == 1:
         subprocess.call("/usr/bin/uwsgi --ini /opt/hwcram/hwcram_uwsgi.ini -d /var/log/hwcram/uwsgi.log",shell=True)
 
-def cron_hwcram_ecs():
-    retcode_hwcram_ecs = subprocess.call("ps -ef|grep hwcram_ecs.py|grep -v grep",shell=True)
-    if retcode_hwcram == 1:
-        subprocess.call("nohup /usr/bin/python3 /opt/hwcram/utils/hwcram_ecs.py > /dev/null 2>&1 &",shell=True)
+def cron_celery():
+    retcode_celery = subprocess.call("ps -ef|grep '/usr/local/python3/bin/python3.6 -m celery worker'|grep -v grep",shell=True)
+    if retcode_celery == 1:
+        subprocess.call("/etc/init.d/celeryd start",shell=True)
+
+def cron_celerybeat():
+    retcode_celerybeat = subprocess.call("ps -ef|grep '/usr/local/bin/celery beat'|grep -v grep",shell=True)
+    if retcode_celerybeat == 1:
+        subprocess.call("/etc/init.d/celerybeat start",shell=True)

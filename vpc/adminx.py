@@ -114,7 +114,6 @@ class CreateipAdmin(object):
         'region',
         'publicip_type',
         'bandwidth_share_type',
-        'bandwidth_size',
     ]
 
     search_fields = [

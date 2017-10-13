@@ -12,7 +12,8 @@ class Vpc(models.Model):
     publicip = models.GenericIPAddressField('弹性IP',null=True)
     privateip = models.GenericIPAddressField('私有IP',null=True)
     project_id = models.CharField('项目ID', max_length=40,null=True)
-    create_time = models.CharField('创建时间(UTC)', max_length=40,null=True)
+    #create_time = models.CharField('创建时间(UTC)', max_length=40,null=True)
+    create_time = models.DateTimeField('创建时间',null=True)
     bandwidth_id = models.CharField('带宽ID', max_length=40,null=True)
     bandtype_choices = (('WHOLE','共享'),('PER','独享'))
     bandwidth_type = models.CharField('带宽类型', choices=bandtype_choices,max_length=10,null=True)
@@ -20,7 +21,7 @@ class Vpc(models.Model):
     bandwidth_name = models.CharField('带宽名称', max_length=128,null=True)
     account = models.ForeignKey(Account,on_delete=models.CASCADE,null=True)
     account_name = models.CharField('账户',max_length=20,null=True)
-    region_choices = (('cn-north-1','华北1'),('cn-south-1','华南1'),('cn-east-2','华东2'))
+    region_choices = (('cn-north-1','华北1'),('cn-east-2','华东2'),('cn-south-1','华南1'))
     region = models.CharField('区域', choices=region_choices, max_length=32, default='cn-north-1')
 
     class Meta:
@@ -33,7 +34,8 @@ class Createip(models.Model):
     iptype_choices = (('5_bgp','动态BGP'),('5_sbgp','静态BGP'))
     publicip_type = models.CharField('IP类型',choices=iptype_choices,max_length=10,null=True,help_text="<font color='red'>* 为必填项</font>")
     publicip = models.GenericIPAddressField('弹性IP',null=True,blank=True,help_text='指定ip地址创建，留空则随机创建ip')
-    create_time = models.CharField('创建时间(UTC)', max_length=40,null=True)
+    #create_time = models.CharField('创建时间(UTC)', max_length=40,null=True)
+    create_time = models.DateTimeField('创建时间',null=True)
     bandtype_choices = (('WHOLE','共享'),('PER','独享'))
     bandwidth_share_type = models.CharField('带宽类型', choices=bandtype_choices,max_length=10,null=True)
     bandwidth_share_id = models.CharField(
@@ -67,9 +69,9 @@ class Createip(models.Model):
     )
     account = models.ForeignKey(Account,on_delete=models.CASCADE,null=True)
     account_name = models.CharField('账户',max_length=20,null=True,help_text='填写云账户中已经配置的帐户名')
-    region_choices = (('cn-north-1','华北1'),('cn-south-1','华南1'),('cn-east-2','华东2'))
+    region_choices = (('cn-north-1','华北1'),('cn-east-2','华东2'),('cn-south-1','华南1'))
     region = models.CharField('区域', choices=region_choices, max_length=32,null=True)
-    result_choices = (('200','状态码200，命令下发成功，请检查IP是否创建成功'),('409','错误码409，IP地址已被占用，创建失败'),('400','错误码400，参数错误，请检查填写项'))
+    result_choices = (('1','参数错误，带宽名称，大小，计费方式，必须填写，请修改'),('2','参数错误，共享带宽ID必须填写，请在弹性IP页面查找ID，请修改'),('200','IP创建成功，请验证IP及带宽'),('409','IP地址已被占用，创建失败'),('400','参数错误，请检查填写项'))
     result = models.CharField('创建结果', choices=result_choices, max_length=128,null=True)
 
     class Meta:
