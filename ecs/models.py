@@ -5,10 +5,6 @@ from api.ecs_api import EcsApi
 
 # Create your models here.
 
-utc_time_now = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
-shut_time = utc_time_now + datetime.timedelta(hours=10)
-delete_time = shut_time + datetime.timedelta(days=7)
-
 class Ecs(models.Model):
     region_choices = (('cn-north-1','华北1'),('cn-south-1','华南1'),('cn-east-2','华东2'))
     ecs_name = models.CharField('主机名称', max_length=128,null=True)
@@ -28,6 +24,9 @@ class Ecs(models.Model):
         db_table = "hw_ecs"
 
     def save(self,*args,**kargs):
+        utc_time_now = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
+        shut_time = utc_time_now + datetime.timedelta(hours=10)
+        delete_time = shut_time + datetime.timedelta(days=7)
         if not (self.ecs_shut_time and self.ecs_delete_time):
             self.ecs_shut_time,self.ecs_delete_time = shut_time,delete_time
 
