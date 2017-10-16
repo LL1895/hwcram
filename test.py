@@ -34,15 +34,13 @@ def get_pid():
 
 itoken = get_token()
 ipid = get_pid()
-#mm = VpcApi(itoken,'cn-north-1',ipid)
-#nn = mm.get_public_ip()
-#ll = nn[0]['create_time']
+mm = VpcApi(itoken,'cn-north-1',ipid)
+nn = mm.get_public_ip()
+ll = nn[0]['create_time']
 #pp = datetime.datetime.strptime(ll,'%Y-%m-%d %H:%M:%S')
 
 def delete_createip():
     for i in createip_data:
         return i.create_time
 
-mm = delete_createip()
-print(mm)
-print(type(mm))
+print(ll)

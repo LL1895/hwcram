@@ -14,7 +14,7 @@ class Account(models.Model):
     tokencn_north_1 = models.TextField('token-华北1',null=True)
     tokencn_east_2 = models.TextField('Token-华东2',null=True)
     tokencn_south_1 = models.TextField('Token-华南1',null=True)
-    token_up_time = models.DateTimeField('Token-有效(UTC)',null=True)
+    token_up_time = models.DateTimeField('Token-失效',null=True)
 
     class Meta:
         verbose_name = "云账户"

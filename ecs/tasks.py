@@ -9,10 +9,9 @@ from account.models import Account
 from ecs.models import Ecs
 from time import sleep
 
-account_data = Account.objects.all()
-
 def sync_ecs_north():
     try:
+        account_data = Account.objects.all()
         for account in account_data:
 
             ecs_all_n = EcsApi(account.tokencn_north_1,'cn-north-1',account.pidcn_north_1).get_ecs()
@@ -34,6 +33,7 @@ def sync_ecs_north():
 
 def is_active_north():
     try:
+        account_data = Account.objects.all()
         for account in account_data:
 
             ecs_active_n = EcsApi(account.tokencn_north_1,'cn-north-1',account.pidcn_north_1).get_active_ecs()
@@ -47,10 +47,11 @@ def is_active_north():
 
 def deal_north():
     try:
+        account_data = Account.objects.all()
         utc_time_now = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
         for account in account_data:
             #shutoff ecs and delete hwclouds_ecs
-            ecs_id_shutoff_n = list(map(lambda x: x.ecs_id, Ecs.objects.filter(ecs_shut_time__lt=utc_time_now,account_name=account.account_name,region='cn-north-1')))
+            ecs_id_shutoff_n = list(map(lambda x: x.ecs_id, Ecs.objects.filter(ecs_shut_time__lt=utc_time_now,ecs_is_active=1,account_name=account.account_name,region='cn-north-1')))
             ecs_id_delete_n = list(map(lambda x: x.ecs_id, Ecs.objects.filter(ecs_delete_time__lt=utc_time_now,account_name=account.account_name,region='cn-north-1')))
 
             if ecs_id_shutoff_n:
@@ -63,6 +64,7 @@ def deal_north():
 
 def private_ip_north():
     try:
+        account_data = Account.objects.all()
         for account in account_data:
             #add private_ip
             private_ip_noexist_n = Ecs.objects.filter(private_ip__isnull=True,ecs_id__isnull=False,account_name=account.account_name,region='cn-north-1')
@@ -74,6 +76,7 @@ def private_ip_north():
 
 def public_ip_north():
     try:
+        account_data = Account.objects.all()
         for account in account_data:
             #add public_ip
             ecs_public_ip_n = VpcApi(account.tokencn_north_1,'cn-north-1',account.pidcn_north_1).get_public_ip()
@@ -87,6 +90,7 @@ def public_ip_north():
 
 def sync_ecs_east():
     try:
+        account_data = Account.objects.all()
         for account in account_data:
 
             ecs_all_e = EcsApi(account.tokencn_east_2,'cn-east-2',account.pidcn_east_2).get_ecs()
@@ -108,6 +112,7 @@ def sync_ecs_east():
 
 def is_active_east():
     try:
+        account_data = Account.objects.all()
         for account in account_data:
 
             ecs_active_e = EcsApi(account.tokencn_east_2,'cn-east-2',account.pidcn_east_2).get_active_ecs()
@@ -122,10 +127,11 @@ def is_active_east():
 
 def deal_east():
     try:
+        account_data = Account.objects.all()
         utc_time_now = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
         for account in account_data:
             #shutoff ecs and delete hwclouds_ecs
-            ecs_id_shutoff_e = list(map(lambda x: x.ecs_id, Ecs.objects.filter(ecs_shut_time__lt=utc_time_now,account_name=account.account_name,region='cn-east-2')))
+            ecs_id_shutoff_e = list(map(lambda x: x.ecs_id, Ecs.objects.filter(ecs_shut_time__lt=utc_time_now,ecs_is_active=1,account_name=account.account_name,region='cn-east-2')))
             ecs_id_delete_e = list(map(lambda x: x.ecs_id, Ecs.objects.filter(ecs_delete_time__lt=utc_time_now,account_name=account.account_name,region='cn-east-2')))
 
             if ecs_id_shutoff_e:
@@ -138,6 +144,7 @@ def deal_east():
 
 def private_ip_east():
     try:
+        account_data = Account.objects.all()
         for account in account_data:
             #add private_ip
             private_ip_noexist_e = Ecs.objects.filter(private_ip__isnull=True,ecs_id__isnull=False,account_name=account.account_name,region='cn-east-2')
@@ -149,6 +156,7 @@ def private_ip_east():
 
 def public_ip_east():
     try:
+        account_data = Account.objects.all()
         for account in account_data:
             #add public_ip
             ecs_public_ip_e = VpcApi(account.tokencn_east_2,'cn-east-2',account.pidcn_east_2).get_public_ip()
@@ -162,6 +170,7 @@ def public_ip_east():
 
 def sync_ecs_south():
     try:
+        account_data = Account.objects.all()
         for account in account_data:
 
             ecs_all_s = EcsApi(account.tokencn_south_1,'cn-south-1',account.pidcn_south_1).get_ecs()
@@ -183,6 +192,7 @@ def sync_ecs_south():
 
 def is_active_south():
     try:
+        account_data = Account.objects.all()
         for account in account_data:
 
             ecs_active_s = EcsApi(account.tokencn_south_1,'cn-south-1',account.pidcn_south_1).get_active_ecs()
@@ -195,10 +205,11 @@ def is_active_south():
 
 def deal_south():
     try:
+        account_data = Account.objects.all()
         utc_time_now = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
         for account in account_data:
             #shutoff ecs and delete hwclouds_ecs
-            ecs_id_shutoff_s = list(map(lambda x: x.ecs_id, Ecs.objects.filter(ecs_shut_time__lt=utc_time_now,account_name=account.account_name,region='cn-south-1')))
+            ecs_id_shutoff_s = list(map(lambda x: x.ecs_id, Ecs.objects.filter(ecs_shut_time__lt=utc_time_now,ecs_is_active=1,account_name=account.account_name,region='cn-south-1')))
             ecs_id_delete_s = list(map(lambda x: x.ecs_id, Ecs.objects.filter(ecs_delete_time__lt=utc_time_now,account_name=account.account_name,region='cn-south-1')))
 
             if ecs_id_shutoff_s:
@@ -211,6 +222,7 @@ def deal_south():
 
 def private_ip_south():
     try:
+        account_data = Account.objects.all()
         for account in account_data:
             #add private_ip
             private_ip_noexist_s = Ecs.objects.filter(private_ip__isnull=True,ecs_id__isnull=False,account_name=account.account_name,region='cn-south-1')
@@ -222,6 +234,7 @@ def private_ip_south():
 
 def public_ip_south():
     try:
+        account_data = Account.objects.all()
         for account in account_data:
             #add public_ip
             ecs_public_ip_s = VpcApi(account.tokencn_south_1,'cn-south-1',account.pidcn_south_1).get_public_ip()

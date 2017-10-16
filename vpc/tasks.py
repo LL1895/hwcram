@@ -98,6 +98,7 @@ def delete_createip_all():
 
 def sync_publicip_north():
     try:
+        account_data = Account.objects.all()
         for account in account_data:
 
             publicip_all_n = VpcApi(account.tokencn_north_1,'cn-north-1',account.pidcn_north_1).get_public_ip()
@@ -146,6 +147,7 @@ def sync_publicip_north():
 
 def sync_publicip_east():
     try:
+        account_data = Account.objects.all()
         for account in account_data:
 
             publicip_all_e = VpcApi(account.tokencn_east_2,'cn-east-2',account.pidcn_east_2).get_public_ip()
@@ -194,6 +196,7 @@ def sync_publicip_east():
 
 def sync_publicip_south():
     try:
+        account_data = Account.objects.all()
         for account in account_data:
 
             publicip_all_s = VpcApi(account.tokencn_south_1,'cn-south-1',account.pidcn_south_1).get_public_ip()

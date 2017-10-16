@@ -142,7 +142,7 @@ CRONJOBS = [
     ('*/1 * * * *', 'crontab.cron.cron_uwsgi','> /dev/null'),
     ('*/1 * * * *', 'crontab.cron.cron_celery','> /dev/null'),
     ('*/1 * * * *', 'crontab.cron.cron_celerybeat','> /dev/null'),
-    ('*/1 * * * *', 'crontab.cron.update_token','> /dev/null'),
+    #('*/1 * * * *', 'crontab.cron.update_token','> /dev/null'),
 ]
 
 BROKER_URL = 'redis://127.0.0.1:6379/0'
@@ -163,6 +163,11 @@ CELERYBEAT_SCHEDULE = {
     'ip-task-20-seconds': {
         'task': 'vpc.tasks.ip_task',
         'schedule': timedelta(seconds=20),
+        'args': ()
+    },
+    'token-task-30-minutes': {
+        'task': 'account.tasks.token_task',
+        'schedule': timedelta(minutes=30),
         'args': ()
     },
 #    # Executes every Monday morning at 7:30 A.M
