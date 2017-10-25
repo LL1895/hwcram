@@ -7,7 +7,6 @@ import log.log as log
 from time import sleep
 from account.models import Account
 from ecs.models import Ecs
-from time import sleep
 
 def sync_ecs_north():
     try:
@@ -252,24 +251,19 @@ def ecs_task():
     sync_ecs_north()
     sync_ecs_east()
     sync_ecs_south()
-    sleep(1)
     #private_ip
     private_ip_north()
     private_ip_east()
     private_ip_south()
-    sleep(1)
     #public_ip
     public_ip_north()
     public_ip_east()
     public_ip_south()
-    sleep(1)
     #status
     is_active_north()
     is_active_east()
     is_active_south()
-    sleep(1)
     #deal
     deal_north()
     deal_east()
     deal_south()
-    sleep(1)

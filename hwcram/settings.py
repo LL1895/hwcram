@@ -155,14 +155,14 @@ CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 CELERY_TIMEZONE = TIME_ZONE
 
 CELERYBEAT_SCHEDULE = {
-    'ecs-task-20-seconds': {
+    'ecs-task-30-seconds': {
         'task': 'ecs.tasks.ecs_task',
-        'schedule': timedelta(seconds=20),
+        'schedule': timedelta(seconds=30),
         'args': ()
     },
-    'ip-task-20-seconds': {
+    'ip-task-30-seconds': {
         'task': 'vpc.tasks.ip_task',
-        'schedule': timedelta(seconds=20),
+        'schedule': timedelta(seconds=30),
         'args': ()
     },
     'token-task-30-minutes': {
