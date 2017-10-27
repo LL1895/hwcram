@@ -7,8 +7,6 @@ from vpc.models import Createip
 from vpc.models import Vpc
 import datetime
 
-account_data = Account.objects.all()
-
 @shared_task
 def createip_task(
     createip_id,
