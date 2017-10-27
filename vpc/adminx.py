@@ -127,15 +127,10 @@ class CreateipAdmin(object):
     ]
 
     #list_editable =  ['account_name', 'user_name', 'password', 'pidcn_north_1', 'pidcn_east_2', 'pidcn_south_1']
-
     list_per_page = 10
-
     #list_export = []
-
     show_detail_fields = []
-
     #refresh_times = (20,40,60)
-
     import_export_args = {'import_resource_class':CreateipImportResource}
-
+    model_icon = 'fa fa-plus'
     actions = [CreateipAction,]

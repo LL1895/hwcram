@@ -5,8 +5,8 @@ from .models import Ecs
 # Register your models here.
 
 class GlobalSetting(object):
-    site_title = '云资源自动管理V1.3.0'
-    site_footer = 'V1.3.0'
+    site_title = '云资源自动管理V1.4.0'
+    site_footer = 'V1.4.0'
 
 class EcsImportResource(resources.ModelResource):
     class Meta:
@@ -32,5 +32,6 @@ class EcsAdmin(object):
     show_detail_fields = []
     #list_editable = ['ecs_shut_time','ecs_delete_time']
     #import_export_args = {'import_resource_class': EcsImportResource}
+    model_icon = 'fa fa-server'
 
 xadmin.site.register(views.CommAdminView, GlobalSetting)

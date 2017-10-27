@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rds',
     'ecs',
     'vpc',
     'account',
@@ -162,6 +163,11 @@ CELERYBEAT_SCHEDULE = {
     },
     'ip-task-30-seconds': {
         'task': 'vpc.tasks.ip_task',
+        'schedule': timedelta(seconds=30),
+        'args': ()
+    },
+    'rds-task-30-seconds': {
+        'task': 'rds.tasks.rds_task',
         'schedule': timedelta(seconds=30),
         'args': ()
     },
