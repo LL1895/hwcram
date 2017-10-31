@@ -142,8 +142,8 @@ def deal_south():
 @shared_task
 def rds_task():
     sync_rds_north()
-#    deal_north()
-#    sync_rds_east()
-#    deal_east()
-#    sync_rds_south()
-#    deal_south()
+    deal_north()
+    sync_rds_east()
+    deal_east()
+    sync_rds_south()
+    deal_south()
