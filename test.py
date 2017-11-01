@@ -19,6 +19,7 @@ from account.models import Account
 from ecs.models import Ecs
 from vpc.models import Createip
 from api.ecs_api import EcsApi
+from api.verify_api import VerifyApi
 
 account_data = Account.objects.filter(account_name='hwcloudstam')
 utc_time_now = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
@@ -34,13 +35,5 @@ def get_pid():
 
 itoken = get_token()
 ipid = get_pid()
-mm = VpcApi(itoken,'cn-north-1',ipid)
-nn = mm.get_public_ip()
-ll = nn[0]['create_time']
-#pp = datetime.datetime.strptime(ll,'%Y-%m-%d %H:%M:%S')
-
-def delete_createip():
-    for i in createip_data:
-        return i.create_time
-
-print(ll)
+mm = VerifyApi(itoken,'cn-north-1',ipid).get_status_code()
+print(mm)
