@@ -145,6 +145,27 @@ class EcsApi(object):
         except Exception as e:
             log.logging.error(e)
 
+    def get_ecs_job(self,job_id):
+        self.job_id = job_id
+        self.nozzle = "/v1/" + self.project_id + "/jobs/" + self.job_id
+        requestUrl = self.endpoint + self.nozzle
+
+        headers = {
+            "content-type": "application/json",
+            "X-Auth-Token": self.token
+        }
+
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+        requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
+        try:
+            r = requests.get(requestUrl,headers=headers,verify=False,timeout=20)
+            if r.status_code == 200:
+                return r.json()
+            else:
+                log.logging.error("status_code is " + str(r.status_code) + " not 200,get job failed")
+        except Exception as e:
+            log.logging.error(e)
+
     def delete_ecs(self,ecs_id,delete_ip="true",delete_volume="true"):
         if isinstance(ecs_id,str):
             self.ecs_id = list(ecs_id.split(None))
@@ -232,5 +253,28 @@ class EcsApi(object):
                 return idict
             else:
                 log.logging.error("status_code is " + str(r.status_code) + " not 200,get private ip failed")
+        except Exception as e:
+            log.logging.error(e)
+
+    def get_ecs_test(self,ecs_name=None):
+        self.nozzle = "/v2/" + self.project_id + "/servers"
+        self.ecs_name = ecs_name
+        if self.ecs_name != None:
+            self.nozzle = "/v2/" + self.project_id + "/servers?name=" + self.ecs_name
+        requestUrl = self.endpoint + self.nozzle
+
+        headers = {
+            "content-type": "application/json",
+            "X-Auth-Token": self.token
+        }
+
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+        requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
+        try:
+            r = requests.get(requestUrl,headers=headers,verify=False,timeout=20)
+            if r.status_code == 200:
+                return {ecs['name']:ecs['id'] for ecs in r.json()['servers']}
+            else:
+                log.logging.error("status_code is " + str(r.status_code) + " not 200,get ecs failed")
         except Exception as e:
             log.logging.error(e)

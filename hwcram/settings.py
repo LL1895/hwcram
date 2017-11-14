@@ -171,6 +171,11 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(seconds=30),
         'args': ()
     },
+    'token-verify-2-minutes': {
+        'task': 'account.tasks.token_verify',
+        'schedule': timedelta(minutes=2),
+        'args': ()
+    },
     'token-task-30-minutes': {
         'task': 'account.tasks.token_task',
         'schedule': timedelta(minutes=30),
